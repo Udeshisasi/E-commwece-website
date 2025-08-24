@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleHub - Modern Fashion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .product-card { transition: all 0.3s ease; }
+        .product-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .cart-slide { transform: translateX(100%); transition: transform 0.3s ease; }
+        .cart-slide.open { transform: translateX(0); }
+        .overlay { opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+        .overlay.active { opacity: 1; visibility: visible; }
+        .page { display: none; }
+        .page.active { display: block; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .nav-link.active { color: #7c3aed; border-bottom: 2px solid #7c3aed; }
+        .breadcrumb { color: #6b7280; }
+        .breadcrumb:last-child { color: #374151; font-weight: 600; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 onclick="showPage('home')" class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent cursor-pointer">StyleHub</h1>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" onclick="showPage('home')" class="nav-link text-gray-700 hover:text-purple-600 font-medium transition-colors pb-4">Home</a>
+                    <a href="#" onclick="showPage('shop')" class="nav-link text-gray-700 hover:text-purple-600 font-medium transition-colors pb-4">Shop</a>
+                    <a href="#" onclick="showPage('categories')" class="nav-link text-gray-700 hover:text-purple-600 font-medium transition-colors pb-4">Categories</a>
+                    <a href="#" onclick="showPage('about')" class="nav-link text-gray-700 hover:text-purple-600 font-medium transition-colors pb-4">About</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button onclick="showPage('search')" class="text-gray-700 hover:text-purple-600 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
+                    <button onclick="showPage('account')" class="text-gray-700 hover:text-purple-600 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </button>
+                    <button onclick="toggleCart()" class="relative text-gray-700 hover:text-purple-600 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m0 0h8m-8 0h8"></path>
+                        </svg>
+                        <span id="cartCount" class="absolute -top-2 -right-2 bg-purple-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HOME PAGE -->
+    <div id="homePage" class="page active">
+        <!-- Hero Section -->
+        <section class="gradient-bg text-white py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-5xl font-bold mb-6">Spring Collection 2025</h2>
+                <p class="text-xl mb-8 opacity-90">Discover the latest trends in fashion</p>
+                <button onclick="showPage('shop')" class="bg-white text-purple-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors transform hover:scale-105">
+                    Shop Now
+                </button>
+            </div>
+        </section>
+
+        <!-- Featured Categories -->
+        <section class="py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h3 class="text-3xl font-bold text-center mb-12">Shop by Category</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="relative overflow-hidden rounded-xl cursor-pointer transform hover:scale-105 transition-transform" onclick="showPage('shop', 'men')">
+                        <img src="https://images.unsplash.com/photo-1516257984-b1b4d707412e?w=600&h=400&fit=crop" alt="Men's Collection" class="w-full h-64 object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                            <h4 class="text-white text-2xl font-bold">Men's Collection</h4>
+                        </div>
+                    </div>
+                    <div class="relative overflow-hidden rounded-xl cursor-pointer transform hover:scale-105 transition-transform" onclick="showPage('shop', 'women')">
+                        <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&h=400&fit=crop" alt="Women's Collection" class="w-full h-64 object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                            <h4 class="text-white text-2xl font-bold">Women's Collection</h4>
+                        </div>
+                    </div>
+                    <div class="relative overflow-hidden rounded-xl cursor-pointer transform hover:scale-105 transition-transform" onclick="showPage('shop', 'accessories')">
+                        <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&h=400&fit=crop" alt="Accessories" class="w-full h-64 object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                            <h4 class="text-white text-2xl font-bold">Accessories</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Products -->
+        <section class="py-16 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h3 class="text-3xl font-bold text-center mb-12">Featured Products</h3>
+                <div id="featuredProducts" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Featured products will be rendered here -->
+                </div>
+                <div class="text-center mt-12">
+                    <button onclick="showPage('shop')" class="bg-purple-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-purple-700 transition-colors">
+                        View All Products
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- SHOP PAGE -->
+    <div id="shopPage" class="page">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Breadcrumb -->
+            <nav class="mb-8">
+                <ol class="flex space-x-2">
+                    <li><a href="#" onclick="showPage('home')" class="breadcrumb hover:text-purple-600">Home</a></li>
+                    <li class="breadcrumb">/</li>
+                    <li class="breadcrumb">Shop</li>
+                </ol>
+            </nav>
+
+            <!-- Filter Bar -->
+            <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <h3 class="text-2xl font-bold text-gray-900">All Products</h3>
+                    <div class="flex flex-wrap gap-4">
+                        <select id="categoryFilter" class="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            <option value="all">All Categories</option>
+                            <option value="T-Shirts">T-Shirts</option>
+                            <option value="Hoodies">Hoodies</option>
+                            <option value="Dresses">Dresses</option>
+                            <option value="Jeans">Jeans</option>
+                            <option value="Jackets">Jackets</option>
+                        </select>
+                        <select id="sortFilter" class="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            <option value="default">Default</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="name">Name A-Z</option>
+                            <option value="rating">Highest Rated</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div id="shopProductsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <!-- Products will be dynamically generated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- PRODUCT DETAIL PAGE -->
+    <div id="productDetailPage" class="page">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Breadcrumb -->
+            <nav class="mb-8">
+                <ol class="flex space-x-2">
+                    <li><a href="#" onclick="showPage('home')" class="breadcrumb hover:text-purple-600">Home</a></li>
+                    <li class="breadcrumb">/</li>
+                    <li><a href="#" onclick="showPage('shop')" class="breadcrumb hover:text-purple-600">Shop</a></li>
+                    <li class="breadcrumb">/</li>
+                    <li id="productBreadcrumb" class="breadcrumb">Product</li>
+                </ol>
+            </nav>
+
+            <div id="productDetailContent" class="bg-white rounded-xl shadow-sm overflow-hidden">
+                <!-- Product detail content will be rendered here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- CATEGORIES PAGE -->
+    <div id="categoriesPage" class="page">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Breadcrumb -->
+            <nav class="mb-8">
+                <ol class="flex space-x-2">
+                    <li><a href="#" onclick="showPage('home')" class="breadcrumb hover:text-purple-600">Home</a></li>
+                    <li class="breadcrumb">/</li>
+                    <li class="breadcrumb">Categories</li>
+                </ol>
+            </nav>
+
+            <h2 class="text-3xl font-bold mb-8">Shop by Category</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer transform hover:scale-105 transition-transform" onclick="showPage('shop', 'T-Shirts')">
+                    <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=300&fit=crop" alt="T-Shirts" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">T-Shirts</h3>
+                        <p class="text-gray-600">Comfortable and stylish t-shirts for everyday wear</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer transform hover:scale-105 transition-transform" onclick="showPage('shop', 'Hoodies')">
+                    <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=300&fit=crop" alt="Hoodies" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Hoodies</h3>
+                        <p class="text-gray-600">Cozy hoodies perfect for casual occasions</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer transform hover:scale-105 transition-transform" onclick="showPage('shop', 'Dresses')">
+                    <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&h=300&fit=crop" alt="Dresses" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Dresses</h3>
+                        <p class="text-gray-600">Elegant dresses for special occasions</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer transform hover:scale-105 transition-transform" onclick="showPage('shop', 'Jeans')">
+                    <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=300&fit=crop" alt="Jeans" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Jeans</h3>
+                        <p class="text-gray-600">Classic denim in various fits and styles</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer transform hover:scale-105 transition-transform" onclick="showPage('shop', 'Jackets')">
+                    <img src="https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=400&h=300&fit=crop" alt="Jackets" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Jackets</h3>
+                        <p class="text-gray-600">Stylish outerwear for all seasons</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer transform hover:scale-105 transition-transform" onclick="showPage('shop', 'Accessories')">
+                    <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=300&fit=crop" alt="Accessories" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Accessories</h3>
+                        <p class="text-gray-600">Complete your look with our accessories</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ACCOUNT PAGE -->
+    <div id="accountPage" class="page">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Breadcrumb -->
+            <nav class="mb-8">
+                <ol class="flex space-x-2">
+                    <li><a href="#" onclick="showPage('home')" class="breadcrumb hover:text-purple-600">Home</a></li>
+                    <li class="breadcrumb">/</li>
+                    <li class="breadcrumb">Account</li>
+                </ol>
+            </nav>
+
+            <div class="bg-white rounded-xl shadow-sm p-8">
+                <h2 class="text-3xl font-bold mb-8">My Account</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">Profile Information</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                                <input type="text" value="John Doe" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                <input type="email" value="john.doe@example.com" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                                <input type="tel" value="+1 (555) 123-4567" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            </div>
+                            <button class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors">
+                                Update Profile
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">Order History</h3>
+                        <div class="space-y-4">
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div>
+                                        <p class="font-semibold">Order #12345</p>
+                                        <p class="text-sm text-gray-600">March 15, 2025</p>
+                                    </div>
+                                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm">Delivered</span>
+                                </div>
+                                <p class="text-lg font-semibold text-purple-600">$129.98</p>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div>
+                                        <p class="font-semibold">Order #12344</p>
+                                        <p class="text-sm text-gray-600">March 10, 2025</p>
+                                    </div>
+                                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm">Processing</span>
+                                </div>
+                                <p class="text-lg font-semibold text-purple-600">$89.99</p>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div>
+                                        <p class="font-semibold">Order #12343</p>
+                                        <p class="text-sm text-gray-600">March 5, 2025</p>
+                                    </div>
+                                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm">Delivered</span>
+                                </div>
+                                <p class="text-lg font-semibold text-purple-600">$199.50</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SEARCH PAGE -->
+    <div id="searchPage" class="page">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Breadcrumb -->
+            <nav class="mb-8">
+                <ol class="flex space-x-2">
+                    <li><a href="#" onclick="showPage('home')" class="breadcrumb hover:text-purple-600">Home</a></li>
+                    <li class="breadcrumb">/</li>
+                    <li class="breadcrumb">Search</li>
+                </ol>
+            </nav>
+
+            <div class="bg-white rounded-xl shadow-sm p-8 mb-8">
+                <h2 class="text-3xl font-bold mb-6">Search Products</h2>
+                <div class="flex gap-4">
+                    <input id="searchInput" type="text" placeholder="Search for products..." class="flex-1 border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    <button onclick="performSearch()" class="bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700 transition-colors">
+                        Search
+                    </button>
+                </div>
+            </div>
+
+            <div id="searchResults" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <p class="col-span-full text-center text-gray-500 py-8">Enter a search term to find products</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABOUT PAGE -->
+    <div id="aboutPage" class="page">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Breadcrumb -->
+            <nav class="mb-8">
+                <ol class="flex space-x-2">
+                    <li><a href="#" onclick="showPage('home')" class="breadcrumb hover:text-purple-600">Home</a></li>
+                    <li class="breadcrumb">/</li>
+                    <li class="breadcrumb">About</li>
+                </ol>
+            </nav>
+
+            <div class="bg-white rounded-xl shadow-sm p-8">
+                <h2 class="text-3xl font-bold mb-8">About StyleHub</h2>
+                
+                <div class="prose max-w-none">
+                    <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=800&h=400&fit=crop" alt="Fashion Store" class="w-full h-64 object-cover rounded-lg mb-8">
+                    
+                    <p class="text-lg text-gray-700 mb-6">
+                        Welcome to StyleHub, your premier destination for contemporary fashion. Since our founding in 2020, we've been committed to bringing you the latest trends and timeless classics that define modern style.
+                    </p>
+                    
+                    <h3 class="text-2xl font-semibold mb-4">Our Mission</h3>
+                    <p class="text-gray-700 mb-6">
+                        At StyleHub, we believe that fashion is more than just clothing – it's a form of self-expression. Our mission is to empower individuals to express their unique style through carefully curated collections that blend quality, comfort, and contemporary design.
+                    </p>
+                    
+                    <h3 class="text-2xl font-semibold mb-4">What Sets Us Apart</h3>
+                    <ul class="text-gray-700 mb-6 space-y-2">
+                        <li>• <strong>Quality Materials:</strong> We source only the finest fabrics and materials for lasting comfort and durability.</li>
+                        <li>• <strong>Sustainable Practices:</strong> Committed to environmentally responsible fashion choices.</li>
+                        <li>• <strong>Inclusive Sizing:</strong> Fashion for every body type and size.</li>
+                        <li>• <strong>Global Inspiration:</strong> Drawing from worldwide fashion trends and cultures.</li>
+                    </ul>
+                    
+                    <h3 class="text-2xl font-semibold mb-4">Customer Experience</h3>
+                    <p class="text-gray-700 mb-6">
+                        Your satisfaction is our priority. From our user-friendly online shopping experience to our responsive customer service team, we're here to ensure your StyleHub journey is seamless and enjoyable.
+                    </p>
+                    
+                    <div class="bg-purple-50 p-6 rounded-lg">
+                        <h4 class="text-xl font-semibold mb-3">Contact Us</h4>
+                        <div class="space-y-2 text-gray-700">
+                            <p><strong>Email:</strong> hello@stylehub.com</p>
+                            <p><strong>Phone:</strong> +1 (555) 123-STYLE</p>
+                            <p><strong>Address:</strong> 123 Fashion Street, Style City, SC 12345</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div id="cartOverlay" class="overlay fixed inset-0 bg-black bg-opacity-50 z-50" onclick="toggleCart()"></div>
+    <div id="cartSidebar" class="cart-slide fixed right-0 top-0 h-full w-96 bg-white shadow-xl z-50">
+        <div class="flex items-center justify-between p-6 border-b">
+            <h3 class="text-xl font-semibold">Shopping Cart</h3>
+            <button onclick="toggleCart()" class="text-gray-500 hover:text-gray-700">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-6">
+            <div id="cartItems" class="space-y-4">
+                <p class="text-gray-500 text-center py-8">Your cart is empty</p>
+            </div>
+        </div>
+        <div class="border-t p-6">
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-lg font-semibold">Total:</span>
+                <span id="cartTotal" class="text-2xl font-bold text-purple-600">$0.00</span>
+            </div>
+            <button onclick="showPage('checkout')" class="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors">
+                Checkout
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Sample product data
+        const products = [
+            { id: 1, name: "Classic White T-Shirt", price: 29.99, image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=500&fit=crop", category: "T-Shirts", rating: 4.5, description: "A timeless white t-shirt made from 100% organic cotton. Perfect for casual wear or layering.", sizes: ["S", "M", "L", "XL"], colors: ["White", "Black", "Gray"] },
+            { id: 2, name: "Denim Jacket", price: 89.99, image: "https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=400&h=500&fit=crop", category: "Jackets", rating: 4.8, description: "Classic denim jacket with modern fit. Made from sustainable denim.", sizes: ["S", "M", "L", "XL"], colors: ["Blue", "Black", "White"] },
+            { id: 3, name: "Summer Dress", price: 79.99, image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&h=500&fit=crop", category: "Dresses", rating: 4.6, description: "Flowing summer dress perfect for warm weather. Light and breathable fabric.", sizes: ["XS", "S", "M", "L"], colors: ["Floral", "Solid Blue", "White"] },
+            { id: 4, name: "Black Hoodie", price: 59.99, image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=500&fit=crop", category: "Hoodies", rating: 4.7, description: "Comfortable hoodie made from premium cotton blend. Perfect for casual outings.", sizes: ["S", "M", "L", "XL", "XXL"], colors: ["Black", "Gray", "Navy"] },
+            { id: 5, name: "Skinny Jeans", price: 69.99, image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=500&fit=crop", category: "Jeans", rating: 4.4, description: "Modern skinny jeans with stretch for comfort. Classic five-pocket design.", sizes: ["28", "30", "32", "34", "36"], colors: ["Blue", "Black", "Dark Wash"] },
+            { id: 6, name: "Striped Sweater", price: 49.99, image: "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&h=500&fit=crop", category: "Sweaters", rating: 4.5, description: "Cozy striped sweater perfect for cooler weather. Soft knit material.", sizes: ["S", "M", "L", "XL"], colors: ["Navy/White", "Red/White", "Black/Gray"] },
+            { id: 7, name: "Casual Blazer", price: 99.99, image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop", category: "Blazers", rating: 4.9, description: "Smart casual blazer suitable for work or formal occasions. Tailored fit.", sizes: ["S", "M", "L", "XL"], colors: ["Navy", "Black", "Charcoal"] },
+            { id: 8, name: "Floral Top", price: 39.99, image: "https://images.unsplash.com/photo-1485968579580-b6d72834b5a2?w=400&h=500&fit=crop", category: "Tops", rating: 4.3, description: "Beautiful floral print top with feminine silhouette. Perfect for spring and summer.", sizes: ["XS", "S", "M", "L"], colors: ["Pink Floral", "Blue Floral", "White Floral"] },
+            { id: 9, name: "Leather Boots", price: 129.99, image: "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?w=400&h=500&fit=crop", category: "Shoes", rating: 4.6, description: "Premium leather boots with comfortable sole. Perfect for any season.", sizes: ["7", "8", "9", "10", "11"], colors: ["Brown", "Black", "Tan"] },
+            { id: 10, name: "Silk Scarf", price: 24.99, image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=500&fit=crop", category: "Accessories", rating: 4.4, description: "Luxurious silk scarf with elegant print. Adds sophistication to any outfit.", sizes: ["One Size"], colors: ["Blue Print", "Red Print", "Neutral"] }
+        ];
+
+        let cart = [];
+        let currentPage = 'home';
+        let filteredProducts = [...products];
+
+        // Navigation and page management
+        function showPage(page, filter = null) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(p => {
+                p.classList.remove('active');
+            });
+            
+            // Update nav active state
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Show selected page
+            const pageElement = document.getElementById(page + 'Page');
+            if (pageElement) {
+                pageElement.classList.add('active');
+                pageElement.classList.add('fade-in');
+                currentPage = page;
+                
+                // Add active class to corresponding nav link
+                const activeLink = document.querySelector(`[onclick="showPage('${page}')"]`);
+                if (activeLink && activeLink.classList.contains('nav-link')) {
+                    activeLink.classList.add('active');
+                }
+            }
+            
+            // Handle page-specific logic
+            switch(page) {
+                case 'home':
+                    renderFeaturedProducts();
+                    break;
+                case 'shop':
+                    if (filter) {
+                        document.getElementById('categoryFilter').value = filter;
+                        filterProducts();
+                    } else {
+                        renderShopProducts();
+                    }
+                    break;
+                case 'search':
+                    document.getElementById('searchInput').focus();
+                    break;
+            }
+        }
+
+        // Product rendering functions
+        function renderFeaturedProducts() {
+            const container = document.getElementById('featuredProducts');
+            const featured = products.slice(0, 4);
+            container.innerHTML = featured.map(product => generateProductCard(product)).join('');
+        }
+
+        function renderShopProducts() {
+            const container = document.getElementById('shopProductsGrid');
+            container.innerHTML = filteredProducts.map(product => generateProductCard(product)).join('');
+        }
+
+        function generateProductCard(product) {
+            return `
+                <div class="product-card bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="relative cursor-pointer" onclick="showProductDetail(${product.id})">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-64 object-cover">
+                        <div class="absolute top-4 right-4">
+                            <button class="bg-white rounded-full p-2 shadow-md hover:bg-gray-50 transition-colors">
+                                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2 cursor-pointer hover:text-purple-600" onclick="showProductDetail(${product.id})">${product.name}</h4>
+                        <div class="flex items-center mb-3">
+                            <div class="flex items-center">
+                                ${generateStars(product.rating)}
+                            </div>
+                            <span class="text-sm text-gray-600 ml-2">(${product.rating})</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xl font-bold text-purple-600">${product.price}</span>
+                            <button onclick="addToCart(${product.id})" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors transform hover:scale-105">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showProductDetail(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            document.getElementById('productBreadcrumb').textContent = product.name;
+            
+            const content = document.getElementById('productDetailContent');
+            content.innerHTML = `
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 p-8">
+                    <div>
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-96 object-cover rounded-lg mb-4">
+                        <div class="grid grid-cols-4 gap-2">
+                            <img src="${product.image}" alt="Thumbnail" class="w-full h-20 object-cover rounded cursor-pointer border-2 border-purple-600">
+                            <img src="${product.image}" alt="Thumbnail" class="w-full h-20 object-cover rounded cursor-pointer hover:border-purple-600 border-2 border-transparent">
+                            <img src="${product.image}" alt="Thumbnail" class="w-full h-20 object-cover rounded cursor-pointer hover:border-purple-600 border-2 border-transparent">
+                            <img src="${product.image}" alt="Thumbnail" class="w-full h-20 object-cover rounded cursor-pointer hover:border-purple-600 border-2 border-transparent">
+                        </div>
+                    </div>
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-4">${product.name}</h1>
+                        <div class="flex items-center mb-4">
+                            <div class="flex items-center">
+                                ${generateStars(product.rating)}
+                            </div>
+                            <span class="text-sm text-gray-600 ml-2">(${product.rating}) | 124 reviews</span>
+                        </div>
+                        <p class="text-3xl font-bold text-purple-600 mb-6">${product.price}</p>
+                        <p class="text-gray-700 mb-6">${product.description}</p>
+                        
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Size</label>
+                            <div class="flex flex-wrap gap-2">
+                                ${product.sizes.map(size => `
+                                    <button class="size-btn border-2 border-gray-300 px-4 py-2 rounded-lg hover:border-purple-600 focus:border-purple-600 focus:bg-purple-50" onclick="selectSize(this)">${size}</button>
+                                `).join('')}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Color</label>
+                            <div class="flex flex-wrap gap-2">
+                                ${product.colors.map(color => `
+                                    <button class="color-btn border-2 border-gray-300 px-4 py-2 rounded-lg hover:border-purple-600 focus:border-purple-600 focus:bg-purple-50" onclick="selectColor(this)">${color}</button>
+                                `).join('')}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Quantity</label>
+                            <div class="flex items-center space-x-3">
+                                <button onclick="changeQuantity(-1)" class="bg-gray-200 rounded-full w-10 h-10 flex items-center justify-center hover:bg-gray-300">-</button>
+                                <span id="quantity" class="text-xl font-semibold">1</span>
+                                <button onclick="changeQuantity(1)" class="bg-gray-200 rounded-full w-10 h-10 flex items-center justify-center hover:bg-gray-300">+</button>
+                            </div>
+                        </div>
+                        
+                        <div class="flex space-x-4">
+                            <button onclick="addToCart(${product.id})" class="flex-1 bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors">
+                                Add to Cart
+                            </button>
+                            <button class="bg-gray-200 text-gray-800 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <div class="mt-8 border-t pt-8">
+                            <div class="space-y-4">
+                                <div class="flex items-center text-sm text-gray-600">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10"></path>
+                                    </svg>
+                                    Free shipping on orders over $100
+                                </div>
+                                <div class="flex items-center text-sm text-gray-600">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                                    </svg>
+                                    30-day return policy
+                                </div>
+                                <div class="flex items-center text-sm text-gray-600">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.031 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                    </svg>
+                                    1-year warranty
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            showPage('productDetail');
+        }
+
+        // Product detail helper functions
+        function selectSize(button) {
+            document.querySelectorAll('.size-btn').forEach(btn => {
+                btn.classList.remove('border-purple-600', 'bg-purple-50');
+                btn.classList.add('border-gray-300');
+            });
+            button.classList.remove('border-gray-300');
+            button.classList.add('border-purple-600', 'bg-purple-50');
+        }
+
+        function selectColor(button) {
+            document.querySelectorAll('.color-btn').forEach(btn => {
+                btn.classList.remove('border-purple-600', 'bg-purple-50');
+                btn.classList.add('border-gray-300');
+            });
+            button.classList.remove('border-gray-300');
+            button.classList.add('border-purple-600', 'bg-purple-50');
+        }
+
+        function changeQuantity(change) {
+            const quantityElement = document.getElementById('quantity');
+            let quantity = parseInt(quantityElement.textContent);
+            quantity = Math.max(1, quantity + change);
+            quantityElement.textContent = quantity;
+        }
+
+        // Search functionality
+        function performSearch() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+            const resultsContainer = document.getElementById('searchResults');
+            
+            if (!searchTerm) {
+                resultsContainer.innerHTML = '<p class="col-span-full text-center text-gray-500 py-8">Enter a search term to find products</p>';
+                return;
+            }
+            
+            const searchResults = products.filter(product => 
+                product.name.toLowerCase().includes(searchTerm) ||
+                product.category.toLowerCase().includes(searchTerm) ||
+                product.description.toLowerCase().includes(searchTerm)
+            );
+            
+            if (searchResults.length === 0) {
+                resultsContainer.innerHTML = '<p class="col-span-full text-center text-gray-500 py-8">No products found matching your search</p>';
+            } else {
+                resultsContainer.innerHTML = searchResults.map(product => generateProductCard(product)).join('');
+            }
+        }
+
+        // Filter functionality
+        function filterProducts() {
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const sortFilter = document.getElementById('sortFilter').value;
+            
+            let filtered = [...products];
+            
+            // Apply category filter
+            if (categoryFilter !== 'all') {
+                filtered = filtered.filter(product => product.category === categoryFilter);
+            }
+            
+            // Apply sorting
+            switch(sortFilter) {
+                case 'price-low':
+                    filtered.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-high':
+                    filtered.sort((a, b) => b.price - a.price);
+                    break;
+                case 'name':
+                    filtered.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+                case 'rating':
+                    filtered.sort((a, b) => b.rating - a.rating);
+                    break;
+            }
+            
+            filteredProducts = filtered;
+            renderShopProducts();
+        }
+
+        // Generate star rating
+        function generateStars(rating) {
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 !== 0;
+            let stars = '';
+            
+            for (let i = 0; i < fullStars; i++) {
+                stars += '<svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>';
+            }
+            
+            if (hasHalfStar) {
+                stars += '<svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><defs><clipPath id="half"><rect x="0" y="0" width="10" height="20"/></clipPath></defs><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" clip-path="url(#half)"/></svg>';
+            }
+            
+            return stars;
+        }
+
+        // Cart functionality
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            
+            updateCart();
+            
+            // Show success animation
+            const button = event.target;
+            const originalText = button.innerHTML;
+            button.innerHTML = '✓ Added';
+            button.classList.add('bg-green-500');
+            button.classList.remove('bg-purple-600');
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.classList.remove('bg-green-500');
+                button.classList.add('bg-purple-600');
+            }, 1000);
+        }
+
+        function updateCart() {
+            const cartCount = document.getElementById('cartCount');
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            cartCount.textContent = totalItems;
+            cartTotal.textContent = `${totalPrice.toFixed(2)}`;
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p class="text-gray-500 text-center py-8">Your cart is empty</p>';
+            } else {
+                cartItems.innerHTML = cart.map(item => `
+                    <div class="flex items-center space-x-4 bg-gray-50 rounded-lg p-4">
+                        <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded">
+                        <div class="flex-1">
+                            <h4 class="font-medium text-sm">${item.name}</h4>
+                            <p class="text-purple-600 font-semibold">${item.price}</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="updateQuantity(${item.id}, -1)" class="bg-gray-200 rounded-full w-8 h-8 flex items-center justify-center hover:bg-gray-300">-</button>
+                            <span class="font-medium">${item.quantity}</span>
+                            <button onclick="updateQuantity(${item.id}, 1)" class="bg-gray-200 rounded-full w-8 h-8 flex items-center justify-center hover:bg-gray-300">+</button>
+                        </div>
+                        <button onclick="removeFromCart(${item.id})" class="text-red-500 hover:text-red-700">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function updateQuantity(productId, change) {
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeFromCart(productId);
+                } else {
+                    updateCart();
+                }
+            }
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCart();
+        }
+
+        function toggleCart() {
+            const cartSidebar = document.getElementById('cartSidebar');
+            const cartOverlay = document.getElementById('cartOverlay');
+            
+            cartSidebar.classList.toggle('open');
+            cartOverlay.classList.toggle('active');
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize filters
+            const categoryFilter = document.getElementById('categoryFilter');
+            const sortFilter = document.getElementById('sortFilter');
+            
+            if (categoryFilter) categoryFilter.addEventListener('change', filterProducts);
+            if (sortFilter) sortFilter.addEventListener('change', filterProducts);
+            
+            // Search on Enter key
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        performSearch();
+                    }
+                });
+            }
+            
+            // Initialize
+            renderFeaturedProducts();
+            updateCart();
+        });
+    </script>
+</body>
+</html>
